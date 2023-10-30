@@ -4,7 +4,7 @@ struct node
 {
     int data;
     struct node *next;
-    // struct node *prev;
+    
 };
 struct node *t, *last, *start = NULL, *a, *b;
 struct node *create(int num)
@@ -12,7 +12,6 @@ struct node *create(int num)
     t = (struct node *)malloc(sizeof(struct node));
     t->data = num;
     t->next = NULL;
-    // t->prev=NULL;
     return t;
 }
 void add(int data)
@@ -26,7 +25,6 @@ void add(int data)
     else
     {
         last->next = t;
-        // t->prev=last;
         last = t;
     }
 }
@@ -36,10 +34,8 @@ void atbeg(int data){
         start=t;
     }
     else{
-        //start->prev=t
         t->next=start;
         start=t;
-
     }
 }
 void atmiddle(int data){
