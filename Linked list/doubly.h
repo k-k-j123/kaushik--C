@@ -100,18 +100,21 @@ void deleteatmid(){
     for(int i=0;i<pos;i++){
         t=t->next;
     }
-    t->next->next->prev=t;//
+    t->next->prev=t;//
     t->next=t->next->next;
 
 }
 void reverse(){
      while (start != NULL) {
+        last=start;
         a = start->prev;
         start->prev = start->next;
         start->next = a;            
         start = start->prev;
     }
-
+    if(last!=NULL){
+        start=last;
+    }
 
 }
 void display()
@@ -141,7 +144,7 @@ void sort()
             if (a->data > b->data)
             {
                 x = a->data;
-                b->data = a->data;
+                a->data = b->data;
                 b->data = x;
             }
         }
