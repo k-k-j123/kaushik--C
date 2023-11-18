@@ -82,9 +82,9 @@ void selectionsort(struct employee a[], int n)
         min = i;
         for (j = i + 1; j < n; j++)
         {
-            if (a[i].age < a[min].age)
+            if (a[j].age < a[min].age)
             {
-                min = i;
+                min = j;
             }
 
             struct employee temp = a[j];
@@ -136,7 +136,7 @@ void mergeing(struct employee a[], int l, int h, int mid)
         i++;
         k++;
     }
-    while (j = h)
+    while (j <= h)
     {
         temp[k] = a[j];
         j++;

@@ -24,7 +24,7 @@ void add(int data)
     }
     last->next = t;
     last = t;
-    last->next = start;
+    last->next = start;//
 }
 void delatmid()
 {
@@ -44,14 +44,14 @@ void delatmid()
         }
 
         struct node *temp = start;
-        start = start->next;
+        start = start->next;//deleting at start
 
         while (start->next != temp)
         {
-            start = start->next;
+            start = start->next;//traverse till end
         }
 
-        start->next = start->next->next;
+        start->next = start->next->next;//storing new start in last element
         free(temp);
         return;
     }
@@ -66,11 +66,11 @@ void delatmid()
     }
     if (t->next->next == start)
     {
-        t->next = start;
+        t->next = start;//deleting last element
         printf("\nelemetn deleted");
         return;
     }
-    t->next = t->next->next;
+    t->next = t->next->next;//deleting at mid
     printf("\nelemnt deleted");
 }
 
