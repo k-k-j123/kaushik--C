@@ -4,7 +4,7 @@
 
 void merge(int arr[],int low,int high,int mid){
     int i,j,k;
-    i=low,j=mid+1,k=0;
+    i=low,j=mid+1,k=low;
     int B[high + 1];
     while(i<=mid && j<=high){
         if(arr[i]<arr[j]){
@@ -24,8 +24,8 @@ void merge(int arr[],int low,int high,int mid){
         B[k]=arr[j];
         k++;j++;
     }
-    for(k=0,i=low;i<=high;i++,k++){
-        arr[i]=B[k];
+    for(i=low;i<=high;i++){
+        arr[i]=B[i];
     }
 }
 void merge_sort(int arr[],int low,int high){

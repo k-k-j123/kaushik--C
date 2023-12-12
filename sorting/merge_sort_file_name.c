@@ -20,7 +20,7 @@ int read_file(struct Employee a[]) {
 }
 void merge(struct Employee arr[],int low,int high,int mid){
     int i,j,k;
-    i=low,j=mid+1,k=0;
+    i=low,j=mid+1,k=low;
     struct Employee B[100];
     while(i<=mid && j<=high){
         if(strcmp(arr[i].name,arr[j].name)<0){//arr[i].age<arr[j].age
@@ -40,8 +40,8 @@ void merge(struct Employee arr[],int low,int high,int mid){
         B[k]=arr[j];
         k++;j++;
     }
-    for(k=0,i=low;i<=high;i++,k++){
-        arr[i]=B[k];
+    for(i=low;i<=high;i++){
+        arr[i]=B[i];
     }
 }
 void merge_sort(struct Employee arr[],int low,int high){
