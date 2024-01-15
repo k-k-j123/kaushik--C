@@ -8,7 +8,7 @@ int main()
     do
     {
         printf("\nmenu\n");
-        printf("\n1)create\n2)insert\n3)preorder\n4)inorder\n5)preorder\n6)search\n7)exit");
+        printf("\n1)create\n2)insert\n3)preorder\n4)inorder\n5)preorder\n6)search\n7)count nodes\n8)count leaf nodes\n99)exit");
         printf("\nenter your choice\t");
         scanf("%d", &choice);
         switch (choice)
@@ -38,8 +38,14 @@ int main()
             scanf("%d", &key);
             root = search(root, key);
             break;
+        case 7:
+            printf("\nnumber of nodes are\t%d",countnodes(root));
+            break;
+        case 8:
+             printf("\nnumber of nodes are\t%d",countleaf(root));
+             break;
         }
-    } while (choice != 7);
+    } while (choice != 99);
 
     return 0;
 }

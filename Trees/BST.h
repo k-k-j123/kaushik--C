@@ -125,4 +125,30 @@ void postorder(struct node *root)
        
     }
 }
-
+int countnodes(struct node *root)
+{
+    static int count=0;
+    struct node *temp=root;
+    if(temp!=NULL)
+    {
+        count++;
+        countnodes(temp->left);
+        countnodes(temp->right);
+    }
+    return count;
+}
+int countleaf(struct node *root)
+{
+    static int leaf=0;
+    struct node *temp=root;
+    if(temp!=NULL)
+    {
+        if(temp->left==NULL && temp->right==NULL)
+        {
+            leaf++;
+        }
+        countleaf(temp->left);
+        countleaf(temp->right);
+    }
+    return leaf;
+}
