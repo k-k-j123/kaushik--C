@@ -33,7 +33,7 @@ int main()
         scanf("%d%d", &v1, &v2);
         G[v1 - 1][v2 - 1] = 1;
     }
-
+    printf("\nadjacency matrix\n");
     for (i = 0; i < V; i++)
     {
         for (j = 0; j < V; j++)
