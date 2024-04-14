@@ -15,7 +15,7 @@ struct node *create(struct node *root)
     scanf("%d", &n);
     for (i = 0; i < n; i++)
     {
-        
+
         printf("\nenter the data to be inserted\t");
         scanf("%d", &data);
         newnode = (struct node *)malloc(sizeof(struct node));
@@ -71,65 +71,97 @@ struct node *insert(struct node *root, int data)
     return (root);
 }
 
-struct node *search(struct node *root,int data)
+struct node *search(struct node *root, int data)
 {
-    if(root==NULL)
+    if (root == NULL)
     {
         printf("\nelement not found");
     }
-    else if(data<root->info)
+    else if (data < root->info)
     {
-        root->left=search(root->left,data);
+        root->left = search(root->left, data);
     }
-    else if(data>root->info)
+    else if (data > root->info)
     {
-        root->right=search(root->right,data);
+        root->right = search(root->right, data);
     }
     else
     {
-        printf("\nelement found is %d",root->info);
+        printf("\nelement found is %d", root->info);
         return root;
     }
 }
 
-void preorder(struct node *root)
-{   
-    struct node *temp=root;
-    if(temp!=NULL)
+struct node *delete(struct node *root, int key)
+{
+    struct node *temp;
+    if (root == NULL)
+        return root;
+    if (key < root->left)
+        root->left = delete (root->left, key);
+    else if (key > root->left)
+        root->right = delete (root->right, key);
+    else
     {
-        printf("%d ",temp->info);
+        if (root->left == NULL)
+        {
+            temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            temp = root->left;
+            free(root);
+            return temp;
+        }
+
+        temp = root->right;
+        while (temp && temp->left != NULL)
+            ;
+        root->info = temp->info;
+        root->right = delete (root->right, temp->info);
+    }
+    return root;
+}
+
+void preorder(struct node *root)
+{
+    struct node *temp = root;
+    if (temp != NULL)
+    {
+        printf("%d ", temp->info);
         preorder(temp->left);
         preorder(temp->right);
     }
 }
 
 void Inorder(struct node *root)
-{   
-    struct node *temp=root;
-    if(temp!=NULL)
+{
+    struct node *temp = root;
+    if (temp != NULL)
     {
         Inorder(temp->left);
-        printf("%d ",temp->info);
+        printf("%d ", temp->info);
         Inorder(temp->right);
     }
 }
 
 void postorder(struct node *root)
-{   
-    struct node *temp=root;
-    if(temp!=NULL)
+{
+    struct node *temp = root;
+    if (temp != NULL)
     {
         postorder(temp->left);
         postorder(temp->right);
-        printf("%d ",temp->info); 
-       
+        printf("%d ", temp->info);
     }
 }
 int countnodes(struct node *root)
 {
-    static int count=0;
-    struct node *temp=root;
-    if(temp!=NULL)
+    static int count = 0;
+    struct node *temp = root;
+    if (temp != NULL)
     {
         count++;
         countnodes(temp->left);
@@ -139,11 +171,11 @@ int countnodes(struct node *root)
 }
 int countleaf(struct node *root)
 {
-    static int leaf=0;
-    struct node *temp=root;
-    if(temp!=NULL)
+    static int leaf = 0;
+    struct node *temp = root;
+    if (temp != NULL)
     {
-        if(temp->left==NULL && temp->right==NULL)
+        if (temp->left == NULL && temp->right == NULL)
         {
             leaf++;
         }
