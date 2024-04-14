@@ -8,7 +8,7 @@ int main()
     do
     {
         printf("\nmenu\n");
-        printf("\n1)create\n2)insert\n3)preorder\n4)inorder\n5)preorder\n6)search\n7)count nodes\n8)count leaf nodes\n99)exit");
+        printf("\n1)create\n2)insert\n3)preorder\n4)inorder\n5)preorder\n6)search\n7)count nodes\n8)count leaf nodes\n9)Delete node\n99)exit");
         printf("\nenter your choice\t");
         scanf("%d", &choice);
         switch (choice)
@@ -44,6 +44,11 @@ int main()
         case 8:
              printf("\nnumber of nodes are\t%d",countleaf(root));
              break;
+        case 9:
+            printf("\nenter the key value to be deleted\n");
+            scanf("%d",&key);
+            delete(root,key);
+            break;
         }
     } while (choice != 99);
 
