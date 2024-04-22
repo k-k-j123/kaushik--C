@@ -118,7 +118,6 @@ struct node *delete(struct node *root, int key)
 
         temp = root->right;
         while (temp && temp->left != NULL)
-            ;
         root->info = temp->info;
         root->right = delete (root->right, temp->info);
     }
