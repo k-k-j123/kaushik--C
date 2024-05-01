@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 void heapify(int arr[], int n, int i)
 {
     int temp;
@@ -42,10 +43,9 @@ int main()
     int i, n;
     printf("Enter how namy elements?\n");
     scanf("%d",&n);
-    printf("\nenter the elements\n");
-    for (i = 0; i < n; i++)
+    for(i=0;i<n;i++)
     {
-        scanf("%d", &arr[i]);
+        arr[i]= rand() % (10 - 0 + 1);
     }
     printf("Before sorting array elements are are: \n");
     for (i = 0; i < n; i++)

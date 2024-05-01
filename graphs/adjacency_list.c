@@ -10,7 +10,7 @@ void create_graph(struct node *adj[])
 {
     struct node *newnode;
     int i, j, k, data;
-    for (i = 0; i <no_vertices; i++)
+    for (i = 0; i < no_vertices; i++)
     {
         struct node *last = NULL;
         printf("\nenter the number of adjacent vertice of %d\t", i);
@@ -36,17 +36,18 @@ void create_graph(struct node *adj[])
     }
 }
 
-void print_graph(struct node *adj[]){
-    struct node *temp=NULL;
-    int i,j;
-    for(i=0;i<no_vertices;i++)
+void print_graph(struct node *adj[])
+{
+    struct node *temp = NULL;
+    int i, j;
+    for (i = 0; i < no_vertices; i++)
     {
-        temp=adj[i];
-        printf("\nthe neighbours of %d are\t",i);
-        while(temp!=NULL)
+        temp = adj[i];
+        printf("\nthe neighbours of %d are\t", i);
+        while (temp != NULL)
         {
-            printf("%d\t",temp->data);
-            temp= temp->next;
+            printf("%d\t", temp->data);
+            temp = temp->next;
         }
     }
 }

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <time.h>
 int a[10][10], n, indegree[10];
 void find_indegree()
 {
