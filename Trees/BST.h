@@ -73,23 +73,17 @@ struct node *insert(struct node *root, int data)
 
 struct node *search(struct node *root, int data)
 {
-    if (root == NULL)
+    struct node *temp=root;
+    while(temp!=NULL)
     {
-        printf("\nelement not found");
+        if(temp->info==data)
+            return temp;
+        else if(data<temp->info)
+            temp=temp->left;
+        else 
+            temp=temp->right;
     }
-    else if (data < root->info)
-    {
-        root->left = search(root->left, data);
-    }
-    else if (data > root->info)
-    {
-        root->right = search(root->right, data);
-    }
-    else
-    {
-        printf("\nelement found is %d", root->info);
-        return root;
-    }
+    return NULL;
 }
 
 struct node *delete(struct node *root, int key)

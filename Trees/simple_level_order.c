@@ -68,21 +68,34 @@ int isfull(struct queue *pq) {
 
 void levelorder(struct node *root)
 {
-    struct node *temp,*current;
+    int level=0;
+    struct node *temp,*current,*marker=NULL;
     if(root==NULL)
         return;
     else{
         struct queue *q = (struct queue *)malloc(sizeof(struct queue));
         init(q);
         enqueue(q,root);
+        enqueue(q,marker);
+        printf("%d ",level);
         while(!isempty(q)){
             current=dequeue(q);
+            if(current==marker)
+            {
+                level++;
+                if(!isempty(q))
+                {
+                    enqueue(q,marker);
+                    printf("\n%dlevel %d --->",level);
+                }
+            }
+            else{
             printf("%d  ",current->info);
             if(current->left!=NULL)
                 enqueue(q,current->left);
             if(current->right!=NULL)
                 enqueue(q,current->right);
-            
+            }
         }
     }
 }
