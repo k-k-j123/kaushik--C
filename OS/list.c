@@ -1,7 +1,9 @@
 #include<stdio.h>
 #include<sys/types.h>
+#include<sys/stat.h>
 #include<unistd.h>
 #include<dirent.h>
+#include<stdlib.h>
 #include<fcntl.h>
 #include<string.h>
 void list(char c,char *dn)
@@ -45,7 +47,7 @@ void list(char c,char *dn)
   }
   closedir(dir);
 }
-main()
+int main()
 {
   char command[80],t1[20],t2[20],t3[20],t4[20];
   int n;
@@ -73,8 +75,8 @@ main()
           }
           break;
     case 3:
-          if(strcmp(t1,"count")==0)
-              count(t2[0],t3);
+          if(strcmp(t1,"list")==0)
+              list(t2[0],t3);
           else
           {
               if(!fork())
