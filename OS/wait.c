@@ -10,7 +10,7 @@ int main()
 		printf("My child id is:%d\n",getpid());
 	else
 	{
-		wait(NULL);
+		wait(NULL);//the parent process will wait until the child process is finished
 		printf("my parent id is:%d\n",getpid());
 	}
 	return 0;

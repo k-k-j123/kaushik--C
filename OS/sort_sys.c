@@ -2,7 +2,7 @@
 #include<unistd.h>
 #include<sys/types.h>
 #include<sys/wait.h>
-#include <stdlib.h>
+#include<stdlib.h>
 int main(){
 	int pid,n=4,i,j,temp,key;
 	int arr[20]={3,2,1,5};

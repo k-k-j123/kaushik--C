@@ -7,7 +7,7 @@ typedef struct process_info{
 	struct process_info *next;
 }NODE;
 int n;
-NODE *first,*last;
+NODE *first,*last,*temp;
 
 void accept_info(){
 	NODE *p;
@@ -56,25 +56,28 @@ void sort(){
 		q=p->next;
 		while(q!=NULL){
 			if(p->at>q->at){
-				strcpy(name,p->pname);
-				strcpy(p->pname,q->pname);
-				strcpy(q->pname,name);
+				// strcpy(name,p->pname);
+				// strcpy(p->pname,q->pname);
+				// strcpy(q->pname,name);
 				
-				t=p->at;
-				p->at=q->at;
-				q->at=t;
+				// t=p->at;
+				// p->at=q->at;
+				// q->at=t;
 				
-				t=p->bt;
-				p->bt=q->bt;
-				q->bt=t;
+				// t=p->bt;
+				// p->bt=q->bt;
+				// q->bt=t;
 
-				t=p->ct;
-				p->ct=q->ct;
-				q->ct=t;
+				// t=p->ct;
+				// p->ct=q->ct;
+				// q->ct=t;
 
-				t=p->bt1;
-				p->bt1=q->bt1;
-				q->bt1=t;
+				// t=p->bt1;
+				// p->bt1=q->bt1;
+				// q->bt1=t;
+				temp=p;
+				p=q;
+				q=temp;
 			}
 			q=q->next;
 		}
