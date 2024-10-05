@@ -8,7 +8,7 @@ int main()
   if(pid==0)
 	printf("pid:%d\tI am a child process with Id:\t%d\n",pid,getpid());
   else if(pid>0)
-	printf("pid:%d\tI am a parent process with Id:\t%d\n",pid,getpid());
+	printf("pid:%d\tI am a parent process with Id:\t%d\n",pid,getppid());
   else
 	printf("fork failed\n");
 
