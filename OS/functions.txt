@@ -1,0 +1,52 @@
+void RR(){
+    int time=0,compleated=0
+    while(compleated<N){
+        int processExecuted=0;
+        for(int i=0;i<n;i++){
+            if(p[i].AT<time && p[i].tempBT>0){
+                printf("| %d %s",time,p[i].pname);
+                if(p[i].tempBT>TQ){
+                    time+=TQ;
+                    p[i].tempBT-=TQ;
+                }else{
+                    time+=p[i].tempBT;
+                    p[i].ct=time;
+                    p[i].tempBT=0;
+                    compleated++
+                }
+                printf(" %d |",time);
+                processExecuted=1
+            }
+        }
+    }
+}
+//for sjf np
+int time;
+int get_next_process() {
+    int selected = -1;
+    for (int i = 0; i < n; i++) {
+        // Check if the process has arrived and is not completed
+        if (p[i].at <= time && p[i].remaining_bt > 0) {
+            // If no process is selected yet or this one has a shorter remaining time
+            if (selected == -1 || p[i].remaining_bt < p[selected].remaining_bt) {
+                selected = i;  // Select this process
+            }
+        }
+    }
+    return selected;  // Return the index of the selected process
+}
+
+void sjf_non_preemptive() {
+    int time = 0, completed = 0;
+    while (completed < n) {
+        int index = get_next_process();
+        if (index == -1) {
+            time++;
+        } else {
+            time += p[index].remaining_bt;
+            p[index].ct = time;
+            p[index].remaining_bt = 0;
+            completed++;
+        }
+    }
+}

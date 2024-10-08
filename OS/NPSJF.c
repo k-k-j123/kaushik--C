@@ -1,115 +1,103 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
+// Define structure
 typedef struct process_info {
     char pname[20];
     int at, bt, ct, remaining_bt;
-    struct process_info *next;
 } Process;
 
-Process *head = NULL;
+// Define global variables
+Process p[100];
+int n;
 
-void accept_info(int *n) {
+void accept_info() {
     printf("Enter number of processes: ");
-    scanf("%d", n);
+    scanf("%d", &n);
 
-    for (int i = 0; i < *n; i++) {
-        Process *p = malloc(sizeof(Process));
+    for (int i = 0; i < n; i++) {
         printf("Enter process name: ");
-        scanf("%s", p->pname);
+        scanf("%s", p[i].pname);
         printf("Enter arrival time: ");
-        scanf("%d", &p->at);
+        scanf("%d", &p[i].at);
         printf("Enter burst time: ");
-        scanf("%d", &p->bt);
-        p->remaining_bt = p->bt;
-        p->next = head;
-        head = p;
+        scanf("%d", &p[i].bt);
+        p[i].remaining_bt = p[i].bt;
+        p[i].ct = 0;
     }
 }
 
-void print_output(int n) {
+void print_output() {
     float total_tat = 0, total_wt = 0;
-    Process *p = head;
     printf("\npname\tat\tbt\tct\ttat\twt\n");
 
-    while (p) {
-        int tat = p->ct - p->at;
-        int wt = tat - p->bt;
+    for (int i = 0; i < n; i++) {
+        int tat = p[i].ct - p[i].at;
+        int wt = tat - p[i].bt;
         total_tat += tat;
         total_wt += wt;
-        printf("%s\t%d\t%d\t%d\t%d\t%d\n", p->pname, p->at, p->bt, p->ct, tat, wt);
-        p = p->next;
+        printf("%s\t%d\t%d\t%d\t%d\t%d\n", p[i].pname, p[i].at, p[i].bt, p[i].ct, tat, wt);
     }
     printf("avg_tat=%.2f\tavg_wt=%.2f\n", total_tat / n, total_wt / n);
 }
 
 void sort_processes() {
     // Bubble sort based on arrival time
-    for (Process *p = head; p != NULL; p = p->next) {
-        for (Process *q = p->next; q != NULL; q = q->next) {
-            if (p->at > q->at) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (p[j].at > p[j + 1].at) {
                 // Swap processes
-                Process temp = *p;
-                *p = *q;
-                *q = temp;
+                Process temp = p[j];
+                p[j] = p[j + 1];
+                p[j + 1] = temp;
             }
         }
     }
 }
 
-Process *get_next_process(int time) {
-    Process *current = head;
-    Process *selected = NULL;
-    while (current != NULL) {
+int get_next_process(int time) {
+    int selected = -1;
+    for (int i = 0; i < n; i++) {
         // Check if the process has arrived and is not completed
-        if (current->at <= time && current->remaining_bt > 0) {
+        if (p[i].at <= time && p[i].remaining_bt > 0) {
             // If no process is selected yet or this one has a shorter remaining time
-            if (selected == NULL || current->remaining_bt < selected->remaining_bt) {
-                selected = current;  // Select this process
+            if (selected == -1 || p[i].remaining_bt < p[selected].remaining_bt) {
+                selected = i;  // Select this process
             }
         }
-        current = current->next;  // Move to the next process
     }
-    
-    return selected;  // Return the selected process
+    return selected;  // Return the index of the selected process
 }
 
-void sjf_non_preemptive(int n) {
+void sjf_non_preemptive() {
     int time = 0, completed = 0;
     while (completed < n) {
-        Process *p = get_next_process(time);
-        if (!p) {
+        int index = get_next_process(time);
+        if (index == -1) {
             time++;
         } else {
-            time += p->remaining_bt;
-            p->ct = time;
-            p->remaining_bt = 0;
+            time += p[index].remaining_bt;
+            p[index].ct = time;
+            p[index].remaining_bt = 0;
             completed++;
         }
-        sort_processes();
     }
 }
 
 void print_gantt_chart() {
     int time = 0;
-    Process *p = head;
     printf("%d", time);
-    while (p) {
-        if (p->remaining_bt == 0) {
-            printf(" -- %s -- %d", p->pname, p->ct);
-        }
-        p = p->next;
+    for (int i = 0; i < n; i++) {
+        printf(" -- %s -- %d", p[i].pname, p[i].ct);
+        time = p[i].ct;
     }
     printf("\n");
 }
 
 int main() {
-    int n;
-    accept_info(&n);
+    accept_info();
     sort_processes();
-    sjf_non_preemptive(n);
-    print_output(n);
+    sjf_non_preemptive();
+    print_output();
     print_gantt_chart();
     return 0;
 }
