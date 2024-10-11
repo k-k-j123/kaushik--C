@@ -29,9 +29,9 @@ void list(char c,char *dn)
     case 'n':
               while((entry=readdir(dir))!=NULL)
               {
-              cnt++;
-              printf("Total no.of Entries=%d\n",cnt);
+                cnt++;
               }
+              printf("Total no.of Entries=%d\n",cnt); 
               break;
               
     case 'i':

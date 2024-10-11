@@ -1,109 +1,80 @@
 #include<stdio.h>
-#include<string.h>
-struct input{
-	char pname[20];
-	int bt,at,ct,p,tbt;
-}tab[5];
-struct sequence{
-	int start,end;
-	char pname[10];
-}seq[100],seq1[20];
-int finish,time,n,k,prev;
-void getinput(){
-	int i;
-	printf("\nenter number of process");
-	scanf("%d",&n);
-	for(i=0;i<n;i++){
-		printf("enter process name:");
-		scanf("%s",tab[i].pname);
-		printf("\nenter burst time:");
-		scanf("%d",&tab[i].bt);
-		printf("enter arrival time:");
-		scanf("%d",&tab[i].at);
-		printf("enter priority:");
-		scanf("%d",&tab[i].p);
-		tab[i].tbt=tab[i].bt;
-	}
-}
-void printInput(){
-	int i;
-	printf("\nProcess\tbt\tat\tp");
-	for(i=0;i<n;i++)
-		printf("\n%s\t%d\t%d\t%d",tab[i].pname,tab[i].bt,tab[i].at,tab[i].p);
-}
-void sort(){
-	struct input t;
-	int i,j;
-	for(i=0;i<n;i++){
-		for(j=0;j<n;j++){
-			if(tab[j++].p<tab[j].p){
-				t=tab[i];
-				tab[i]=tab[j];
-				tab[j]=t;
-			}
-		}
-	}
-}
-void processinput(){
-	int i;
-	k=finish=0;
-	while(finish!=n){
-		outside:
-		for(i=0;i<n;i++){
-			if(tab[i].at<=time && tab[i].tbt!=0){
-				time++;
-				tab[i].tbt--;
-				printInput();
-				seq[k].start=prev;
-				seq[k].end=time;
-				strcpy(seq[k++].pname,tab[i].pname);
-				prev=time;
-				tab[i].ct=time;
-				if(tab[i].tbt==0)
-					finish++;
-				goto outside;
-			}
-		}
-		if(finish!=n){
-			time++;
-			seq[k].start=prev;
-			seq[k].end=time;
-			strcpy(seq[k++].pname,"*");
-			prev=time;
-		}
-	}
-}
-void printoutput(){
-	int i;
-	float avgTAT=0,avgWT=0;
-	printf("\nprocess\tat\tbt\tct\ttat\twt");
-	for(i=0;i<n;i++){
-		printf("\n%s\t%d\t%d\t%d\t%d\t%d",tab[i].pname,tab[i].bt,tab[i].ct-tab[i].at,
-		tab[i].ct-tab[i].at-tab[i].bt);
-		avgTAT+=tab[i].ct-tab[i].at;
-		avgWT+=tab[i].ct-tab[i].at-tab[i].bt;
-	}
-	avgTAT/=n;avgWT/=n;
-	printf("\naverage TAT=%f",avgTAT);
-	printf("\naverage WT=%f",avgWT);
-}
-void gantt_chart(){
-	int i,j=1;
-	seq1[0]=seq[0];
-	for(i=1;i<k;i++){
-		if(strcmp(seq1[j-1].pname,seq1[i].pname)==0)
-			seq1[j-1].end=seq[i].end;
-		else	
-			seq1[j++]=seq[i];
-	}
-	for(i=0;i<j;i++)
-		printf("\n%d\t%s\t%d",seq1[i].start,seq1[i].pname,seq1[i].end);
-}
-int main(){
-	int i;
-	getinput();
-	sort();
-	processinput();
-	printoutput();
-	gantt_chart();
+
+#define MAX 5
+
+struct process {
+    char name[10];
+    int arrival, burst, priority, completion,tempBT;
+};
+
+int main() {
+    struct process p[MAX];
+    int n, time = 0;
+
+    // Input processes
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        printf("Enter process %d name: ", i + 1);
+        scanf("%s", p[i].name);
+        printf("Enter arrival time: ");
+        scanf("%d", &p[i].arrival);
+        printf("Enter burst time: ");
+        scanf("%d", &p[i].burst);
+        printf("Enter priority (lower value = higher priority): ");
+        scanf("%d", &p[i].priority);
+		p[i].tempBT=p[i].burst;
+    }
+
+    // Sorting by arrival time
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (p[i].arrival > p[j].arrival) {
+                struct process temp = p[i];
+                p[i] = p[j];
+                p[j] = temp;
+            }
+        }
+    }
+
+    // Preemptive Priority Scheduling
+    printf("\nGantt Chart:\n");
+    int completed = 0;
+    while (completed < n) {
+        int min_p = 999, min_i = -1;
+        for (int i = 0; i < n; i++) {
+            if (p[i].arrival <= time && p[i].tempBT > 0 && p[i].priority < min_p) {
+                min_p = p[i].priority;
+                min_i = i;
+            }
+        }
+        if (min_i == -1) {
+            time++;
+            printf("%d # %d|", time - 1, time);
+        } else {
+            time++;
+            p[min_i].tempBT--;
+            printf("%d %s %d|", time - 1, p[min_i].name, time);
+            if (p[min_i].tempBT == 0) {
+                p[min_i].completion = time;
+                completed++;
+            }
+        }
+    }
+
+    // Print process details
+    float avgTAT = 0, avgWT = 0;
+    printf("\nPname\tAT\tBT\tCT\tTAT\tWT\n");
+    for (int i = 0; i < n; i++) {
+        int tat = p[i].completion - p[i].arrival;
+        int wt = tat - p[i].tempBT;
+        avgTAT += tat;
+        avgWT += wt;
+        printf("%s\t%d\t%d\t%d\t%d\t%d\n", p[i].name, p[i].arrival, p[i].burst, p[i].completion, tat, wt);
+    }
+    avgTAT /= n;
+    avgWT /= n;
+    printf("\nAverage TAT = %f\nAverage WT = %f\n", avgTAT, avgWT);
+
+    return 0;
 }
