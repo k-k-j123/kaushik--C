@@ -5,7 +5,7 @@ void RR(){
             if(p[i].at<time && p[i].tempBT!=0){
                 printf("|%d %s",time,p[i].pname);
                 if(p[i].tempBT>TQ){
-                    time+=p[i].tempBT;
+                    time+=TQ;
                     p[i].tempBT-=TQ;
                 }else{
                     time+=p[i].tempBT;

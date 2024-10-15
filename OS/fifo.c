@@ -1,98 +1,82 @@
-#include<stdio.h>
+#include <stdio.h>
+
 #define MAX 20
 
-int frames[MAX],ref[MAX],mem[MAX][MAX],faults,sp,m,n;
-
-void accept()
+void fifo(int frames, int references, int ref[])
 {
-	int i;
+    int mem[frames]; // 1D array to simulate memory
+    int faults = 0;
+    int sp = 0;
 
-	printf("Enter no.of frames:");
-	scanf("%d", &n);
+    // Initialize memory with -1 (empty)
+    for (int i = 0; i < frames; i++)
+    {
+        mem[i] = 0;
+    }
 
-	printf("Enter no.of references:");
-	scanf("%d", &m);
+    // Iterate through each page reference
+    for (int i = 0; i < references; i++)
+    {
+        // Check if page is already in memory
+        int found = 0;
+        for (int j = 0; j < frames; j++)
+        {
+            if (mem[j] == ref[i])
+            {
+                found = 1;
+                break;
+            }
+        }
 
-	printf("Enter reference string:\n");
-	for(i=0;i<m;i++)
-	{
-		printf("[%d]=",i);
-		scanf("%d",&ref[i]);
-	}
+        // Handle page fault
+        if (!found)
+        {
+            // Add page to current frame
+            mem[sp] = ref[i];
+
+            // Increment frame pointer (circular buffer)
+            sp = (sp + 1) % frames;
+
+            // Increment page fault counter
+            faults++;
+        }
+        printf("Memory: ");
+        for (int i = 0; i < frames; i++)
+        {
+            printf("%d ", mem[i]);
+        }
+        printf("\n");
+    }
+
+    // Display reference string
+    printf("Reference String: ");
+    for (int i = 0; i < references; i++)
+    {
+        printf("%d ", ref[i]);
+    }
+    printf("\n");
+
+    // Display total page faults
+    printf("Total Page Faults: %d\n", faults);
 }
-
-void disp()
-{
-	int i,j;
-
-	for(i=0;i<m;i++)
-		printf("%3d",ref[i]);
-
-	printf("\n\n");
-
-	for(i=0;i<n;i++)
-	{
-		for(j=0;j<m;j++)
-		{
-			if(mem[i][j])
-				printf("%3d",mem[i][j]);
-			else
-				printf("   ");
-		}
-		printf("\n");
-	}
-
-	printf("Total Page Faults: %d\n",faults);
-}
-
-int search(int pno)
-{
-	int i;
-
-	for(i=0;i<n;i++)
-	{
-		if(frames[i]==pno)
-			return i;
-	}
-
-	return -1;
-}
-
-void fifo()
-{
-	int i,j;
-
-	for(i=0;i<m;i++)
-	{
-		if(search(ref[i])==-1)
-		{
-			frames[sp] = ref[i];
-			sp = (sp+1)%n;
-			faults++;
-			for(j=0;j<n;j++)
-				mem[j][i] = frames[j];
-
-		}
-	}
-}
-
 int main()
 {
-	accept();
-	fifo();
-	disp();
+    int frames, references;
 
-	return 0;
+    printf("Enter number of frames: ");
+    scanf("%d", &frames);
+
+    printf("Enter number of references: ");
+    scanf("%d", &references);
+
+    int ref[references];
+    printf("Enter reference string: ");
+    for (int i = 0; i < references; i++)
+    {
+        scanf("%d", &ref[i]);
+    }
+
+    fifo(frames, references, ref);
+
+    return 0;
 }
-
-
-
-
-
-	
-
-
-
-
-
-

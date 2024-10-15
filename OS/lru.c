@@ -1,124 +1,57 @@
 #include <stdio.h>
 #define MAX 20
-
-int frames[MAX], ref[MAX], mem[MAX][MAX], faults,
-	sp, m, n, time[MAX];
-
-void accept()
-{
-	int i;
-
-	printf("Enter no.of frames:");
-	scanf("%d", &n);
-
-	printf("Enter no.of references:");
-	scanf("%d", &m);
-
-	printf("Enter reference string:\n");
-	for (i = 0; i < m; i++)
-	{
-		printf("[%d]=", i);
-		scanf("%d", &ref[i]);
-	}
-}
-
-void disp()
-{
-	int i, j;
-
-	for (i = 0; i < m; i++)
-		printf("%3d", ref[i]);
-
-	printf("\n\n");
-
-	for (i = 0; i < n; i++)
-	{
-		for (j = 0; j < m; j++)
-		{
-			if (mem[i][j])
-				printf("%3d", mem[i][j]);
-			else
-				printf("   ");
+void lru(int frames,int references,int ref[]){
+	int sp=0,mem[frames],faults=0,timestamp[MAX];
+	for(int i=0;i<frames;i++)
+		mem[i]=0;
+	
+	for(int i=0;i<references;i++){
+		int oldest=0,found=0;
+		for(int j=0;j<frames;j++){
+			if(mem[j]==ref[i]){
+				timestamp[j]=i;
+				found=1;
+				break;
+			}
+			if(j==0 || timestamp[oldest]>timestamp[j]){
+				oldest=j;
+			}
 		}
-		printf("\n");
-	}
-
-	printf("Total Page Faults: %d\n", faults);
-}
-
-int search(int pno)
-{
-	int i;
-
-	for (i = 0; i < n; i++)
-	{
-		if (frames[i] == pno)
-			return i;
-	}
-
-	return -1;
-}
-
-int get_lru()
-{
-	int i, min_i, min = 9999;
-
-	for (i = 0; i < n; i++)
-	{
-		if (time[i] < min)
-		{
-			min = time[i];
-			min_i = i;
-		}
-	}
-
-	return min_i;
-}
-
-void lru()
-{
-	int i, j, k;
-
-	for (i = 0; i < m && sp < n; i++)
-	{
-		k = search(ref[i]);
-		if (k == -1)
-		{
-			frames[sp] = ref[i];
-			time[sp] = i;
+		if(!found){
+			if(sp<frames){
+				mem[sp]=ref[i];
+				timestamp[sp]=i;
+				sp++;
+			}
+			else{
+				mem[oldest]=ref[i];
+				timestamp[oldest]=i;
+			}
 			faults++;
-			sp++;
-
-			for (j = 0; j < n; j++)
-				mem[j][i] = frames[j];
 		}
-		else
-			time[k] = i;
-	}
-
-	for (; i < m; i++)
-	{
-		k = search(ref[i]);
-		if (k == -1)
-		{
-			sp = get_lru();
-			frames[sp] = ref[i];
-			time[sp] = i;
-			faults++;
-
-			for (j = 0; j < n; j++)
-				mem[j][i] = frames[j];
+		printf("\nMemory:");
+		for(int i=0;i<frames;i++){
+			printf("%d ",mem[i]);
 		}
-		else
-			time[k] = i;
 	}
+	printf("\n\nnumber of page faults:%d\n",faults);
 }
-
-int main()
-{
-	accept();
-	lru();
-	disp();
-
+int main(){
+	int frames,references;
+	printf("\nenter number of frames\t");
+	scanf("%d",&frames);
+	printf("\nenter number of reference string\t");
+	scanf("%d",&references);
+	int ref[references];
+	printf("\nenter the reference string:\n");
+	for(int i=0;i<references;i++){
+		scanf("%d",&ref[i]);
+	}
+	printf("\nrefrence string is \n");
+	for(int i=0;i<references;i++){
+		printf("%d ",ref[i]);
+	}
+	printf("\n\nLRU implementation");
+	lru(frames,references,ref);
 	return 0;
 }
