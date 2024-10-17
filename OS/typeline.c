@@ -38,15 +38,13 @@ void typeline(char *s,char *fn){
                 cnt++;
             }
 	lseek(handle,0,SEEK_SET);
+	int index=cnt+(n);
 	while(read(handle,&ch,1)!=0){
 		if(ch=='\n')
 			i++;
-		if(i==cnt+n-1)
-			break;
+		if(i>=index)
+			printf("%c",ch);
 	}
-	while(read(handle,&ch,1)!=0)
-		printf("%c",ch);
-	printf("\n");
 	close(handle);
         return;
     }
