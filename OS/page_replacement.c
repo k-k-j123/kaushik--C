@@ -53,10 +53,48 @@ void lru(int frames,int references,int ref[]){
                 mem[oldest]=ref[i];
                 timestamp[oldest]=i;
             }
+            faults++;
         }
         printf("Memory:");
         for(int i=0;i<frames;i++){
             printf("%d ",mem[i]);
         }
     }
+    printf("\nTotal number of faults:%d",faults);
+}
+void lfu(int frames,int references,int ref[]){
+    int mem[frames],freq[frames],faults=0,min_freq=0,min_index=0;
+    for(int i=0;i<frames;i++){
+        mem[i]=0;
+        freq[i]=0;
+    }
+    for(int i=0;i<references;i++){
+        int found=0;
+        for(int j=0;j<frames;j++){
+            if(mem[j]==ref[i]){
+                found=1;
+                freq[j]++;
+                break;
+            }
+        }
+        if(!found){
+            faults++;
+            min_freq=freq[0];//MAX_freq for MFU
+            min_index=0;//MAX_index for MFU
+            for(int j=0;j<frames;j++){
+                if(freq[i]<min_freq){//for MFU cchange less than to greater than
+                    min_freq=freq[i];
+                    min_index=i;
+                }
+            }
+
+            mem[min_index]=ref[i];
+            freq[min_index]=1;
+        }
+        printf("\nmemory:");
+        for(int j=0;j<frames;j++){
+            printf("%d ",mem[j]);
+        }
+    }
+    printf("\nnumber of faults:%d",faults);
 }
