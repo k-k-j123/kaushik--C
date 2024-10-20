@@ -93,6 +93,18 @@ void typeline(char *s,char *fn){
 		close(handle);
 		return;
 	}
+	else{
+		while(read(handle,&ch,1)!=0)
+			cnt++;
+		int index=cnt+(n);
+		while(read(handle,&ch,1)!=0){
+			if(ch=='\n')
+				i++;
+			if(index>=i){
+				printf("%c",&ch);
+			}
+		}
+	}
 }
 
 int main(){

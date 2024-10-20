@@ -1,0 +1,53 @@
+<html>
+    <head>
+    <title>slip1-1</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .par{
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: min-content;
+        }
+        .main{
+            width:25vw;
+            background-color: aqua;
+            font-weight: 600;
+            padding:10px;
+        }
+        .main input,textarea{
+            margin:20px;
+        }
+        .main label{
+            text-align: center;
+        }
+      
+    </style>
+    </head>
+    <body>
+        <div class="par">
+        <h2>Project Management</h2>
+            <div class="main">
+                <label for="pname">Project name</label>
+                <input type="text" name="pname"><br>
+                <label for="AssignedTo">Assigned to</label>
+                <input type="text" name="AssignedTo"><br>
+                <label for="Sdate">Start date</label>
+                <input type="date" name="Sdate"><br>
+                <label for="Edate">End date</label>
+                <input type="date" name="Edate"><br>
+                <span>Priority</span>
+                <input type="radio" name="priority" id="1"><span>High</span>
+                <input type="radio" name="priority" id="2"><span>Medium</span>
+                <input type="radio" name="priority" id="3"><span>Low</span><br>
+                <label for="desc">Description</label>
+                <textarea name="desc" rows="5" cols="30" ></textarea><br>
+            </div>
+        </div>
+    </body>
+</html>
