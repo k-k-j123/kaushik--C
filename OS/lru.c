@@ -1,12 +1,12 @@
 #include <stdio.h>
 #define MAX 20
 void lru(int frames,int references,int ref[]){
-	int sp=0,mem[frames],faults=0,timestamp[MAX];
+	int sp=0,mem[frames],faults=0,timestamp[MAX],flag;
 	for(int i=0;i<frames;i++)
 		mem[i]=0;
 	
 	for(int i=0;i<references;i++){
-		int oldest=0,found=0;
+		int oldest=0,found=0,flag=0;
 		for(int j=0;j<frames;j++){
 			if(mem[j]==ref[i]){
 				timestamp[j]=i;
@@ -28,10 +28,14 @@ void lru(int frames,int references,int ref[]){
 				timestamp[oldest]=i;
 			}
 			faults++;
+			flag=1;
 		}
 		printf("\nMemory:");
 		for(int i=0;i<frames;i++){
 			printf("%d ",mem[i]);
+		}
+		if(flag==1){
+			printf(" Y");
 		}
 	}
 	printf("\n\nnumber of page faults:%d\n",faults);
