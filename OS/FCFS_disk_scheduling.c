@@ -5,7 +5,7 @@ int main(){
     float avg;
     printf("Enter the max range of disk\n");
     scanf("%d",&max);
-    printf("enter the size of disk request\n");
+    printf("enter number of requests\n");
     scanf("%d",&n);
     printf("enter the queue of disk positions to be read\n");
     for(int i=1;i<=n;i++)

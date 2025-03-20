@@ -1,55 +1,49 @@
-#include<stdio.h>
-#include<stdlib.h>
-int main(){
-	int RQ[100],i,j,n,TotalHeadMovement=0,initial,size,move;
-	printf("Enter the number of request:\n");
-	scanf("%d",&n);
-	printf("Enter the request sequence:\n");
-	for(i=0;i<n;i++){
-		scanf("%d",&RQ[i]);
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+
+	int n;
+	int disk_size;
+	int choice;
+	printf("\nenter disk size\t");
+	scanf("%d", &disk_size);
+	printf("\nenter the number of request\t");
+	scanf("%d", &n);
+	printf("\nenter the request\n");
+	int request[n];
+	for (int i = 0; i < n; i++)
+	{
+		scanf("%d", &request[i]);
 	}
-	printf("Enter initial head position:\n");
-	scanf("%d",&initial);
-	printf("Enter total disk size:\n");
-	scanf("%d",&size);
-	printf("Enter total head movement direction for high 1 and for low 0:");
-	scanf("%d",&move);
-	for(i=0;i<n;i++){
-		for(j=0;j<n-i-1;j++){
-			if(RQ[j]>RQ[j+1]){
-				int temp;
-				temp=RQ[j];
-				RQ[j]=RQ[j+1];
-				RQ[j+1]=temp;
+	int head;
+	printf("\nenter the head position\t");
+	scanf("%d", &head);
+	printf("\nenter the direction\n0.left\n1.right\n");
+	scanf("%d", &choice);
+	int seek = 0;
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = i + 1; j < n - i - 1; j++)
+		{
+			if (request[i] > request[j])
+			{
+				int temp = request[i];
+				request[i] = request[j];
+				request[j] = temp;
 			}
 		}
 	}
-	int index;
-	for(i=0;i<n;i++){
-		if(initial<RQ[i]){
-			index=i;
-			break;
-		}
+	if (choice == 0)
+	{
+		seek += abs(head - disk_size);
+		seek += abs(disk_size - request[0]);
 	}
-	if(move==1){
-		for(i=index;i<n;i++){
-			TotalHeadMovement=TotalHeadMovement+abs(RQ[i]-initial);
-			initial=RQ[i];
-		}
-	}else{
-		for(i=index-1;i>=0;i--){
-			TotalHeadMovement=TotalHeadMovement+abs(RQ[i]-initial);
-			initial=RQ[i];
-		}
-		TotalHeadMovement=TotalHeadMovement+abs(RQ[i+1]-0);
-		initial=0;
-		for(i=index;i<n;i++){
-			TotalHeadMovement=TotalHeadMovement+abs(RQ[i]-initial);
-			initial=RQ[i];
-		}
+	else
+	{
+		seek += abs(head - 0);
+		seek += abs(request[n - 1] - 0);
 	}
-	printf("Total head movement is %d",TotalHeadMovement);
+	printf("\nseek time is %d\n", seek);
 	return 0;
 }
-
-

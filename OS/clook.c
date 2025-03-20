@@ -37,9 +37,22 @@ int main()
     if(choice==0){
         seek+=abs(head-request[0]);
         seek+=abs(request[n-1]-request[0]);
+        int toservice = 0, i = 0;
+		while (request[i] <= head)
+		{
+			i++;
+		}
+        seek+=abs(request[n-1]-request[i]);
     }else{
         seek+=abs(head-request[n-1]);
         seek+=abs(request[n-1]-request[0]);
+        int toservice = 0, i = 0;
+		while (request[i] < head)
+		{
+			i++;
+		}
+        i--;
+        seek+=abs(request[i]-request[0]);
     }
     printf("\nseek time is %d\n",seek);
     return 0;
